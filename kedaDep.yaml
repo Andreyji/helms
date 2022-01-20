@@ -1,0 +1,139 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2022-01-04T16:39:51Z"
+  generateName: keda-operator-c97bd5c96-
+  labels:
+    app: keda-operator
+    pod-template-hash: c97bd5c96
+  name: keda-operator-c97bd5c96-bqbhx
+  namespace: keda
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ReplicaSet
+    name: keda-operator-c97bd5c96
+    uid: 011a5f63-f61e-4260-a1d6-b5976aac1206
+  resourceVersion: "888558"
+  uid: e1c8f5df-088f-4c8e-a63b-dc13a897a33e
+spec:
+  containers:
+  - args:
+    - --enable-leader-election
+    - --zap-log-level=info
+    - --zap-encoder=console
+    command:
+    - /keda
+    env:
+    - name: WATCH_NAMESPACE
+    - name: POD_NAME
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.name
+    - name: OPERATOR_NAME
+      value: keda-operator
+    image: ghcr.io/kedacore/keda:2.2.0
+    imagePullPolicy: Always
+    livenessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /healthz
+        port: 8081
+        scheme: HTTP
+      initialDelaySeconds: 25
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    name: keda-operator
+    ports:
+    - containerPort: 8080
+      name: http
+      protocol: TCP
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /readyz
+        port: 8081
+        scheme: HTTP
+      initialDelaySeconds: 20
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    resources: {}
+    securityContext: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: keda-operator-token-988n4
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: aks-syspool12013-35050741-vmss000000
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: keda-operator
+  serviceAccountName: keda-operator
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: keda-operator-token-988n4
+    secret:
+      defaultMode: 420
+      secretName: keda-operator-token-988n4
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2022-01-04T16:39:51Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2022-01-09T16:24:43Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2022-01-09T16:24:43Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2022-01-04T16:39:51Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: containerd://23a36a7b6c97727fd15f301d50ca0a3d20fb7c1a23e1c6b9cc5208fb6ac59881
+    image: ghcr.io/kedacore/keda:2.2.0
+    imageID: ghcr.io/kedacore/keda@sha256:85587361cddea41745a53f26107e5ddf64a19825b2b52adef28450ed1d128bf3
+    lastState:
+      terminated:
+        containerID: containerd://5020fa171199a438c1cfb93773ecd960f706c620636a153e88aeca024e7bce4a
+        exitCode: 2
+        finishedAt: "2022-01-09T16:24:14Z"
+        reason: Error
+        startedAt: "2022-01-04T16:40:12Z"
+    name: keda-operator
+    ready: true
+    restartCount: 1
+    started: true
+    state:
+      running:
+        startedAt: "2022-01-09T16:24:16Z"
+  hostIP: 10.240.0.4
+  phase: Running
+  podIP: 10.240.0.15
+  podIPs:
+  - ip: 10.240.0.15
+  qosClass: BestEffort
+  startTime: "2022-01-04T16:39:51Z"
